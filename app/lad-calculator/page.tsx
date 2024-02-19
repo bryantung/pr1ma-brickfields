@@ -50,7 +50,7 @@ export default function LADCalculator() {
         <div>365</div>
       </div>
       <hr className="my-8 border-brickfields dark:border-inherit" />
-      <p>According to Clause 28(2), owners may claim LAD for common facilities, below is the calculation formular:</p>
+      <p>According to Clause 28(2), owners may claim LAD for common facilities, below is the calculation formula:</p>
       <br />
       <div className="inline-block text-center self-center">
         <div>20% x harga rumah x 10% x [jumlah hari tertunggak - tempoh pengecualian*]</div>
