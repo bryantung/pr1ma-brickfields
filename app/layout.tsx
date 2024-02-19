@@ -26,9 +26,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={layoutClasses}>
         <h1 className={`text-center text-4xl py-6 shadow-md sticky top-0 grow-0 mb-6 bg-white dark:bg-brickfields`}>
-          Residensi PR1MA Brickfields
+          Residensi PR1MA Brickfields <sup className="text-sm -top-4">1</sup>
         </h1>
         {children}
+        <footer className="bg-pink-600 min-h-36 grow-0 p-8 md:px-24">
+          <div className="text-sm">
+            Disclaimers:<br />
+            <sup>[1]</sup> This is an unoffical page of Residensi PR1MA Brickfields, solely created by one of the homeowner for sharing information.
+            <br />
+            <sup>[2]</sup> The LAD Calculator is only meant for reference purposes, it doesn't hold any legal authority against the actual compensation presented by PR1MA.
+          </div>
+        </footer>
       </body>
     </html>
   );

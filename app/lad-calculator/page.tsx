@@ -38,8 +38,8 @@ export default function LADCalculator() {
   }, [spaDate, estimatedVP, purchaseAmount, getDelayInDays, setLADUnitAmount, setLADCFAmount]);
 
   return (
-    <main className="flex flex-col container mx-auto px-8 pb-16 md:p-24">
-      <p>According to Homebuyer Review Committee meeting held on 31 March 2023, the calculation of LAD is stated as below</p>
+    <main className="flex flex-col grow container mx-auto px-8 pb-16 md:px-24 md:pb-36">
+      <p>According to Homebuyer Review Committee meeting held on 31 March 2023, the calculation of LAD is stated as below:</p>
       <br />
       <p>Cara pengiraan pembayaran LAD mengikut pengiraan yang telah ditetapkan didalam <b>Klausa 26 (2) Perjanjian Jual Beli (SPA) dan Seksyen 35 Akta COVID-19</b> adalah seperti berikut:</p>
       <br />
@@ -49,8 +49,8 @@ export default function LADCalculator() {
         <div>365</div>
       </div>
       <div className="calculator mt-8">
-        <p className="mb-4">You can utilize the calculator below to calculate the estimated LAD amount.</p>
-        <div className="grid grid-cols-4 gap-3 items-center md:w-3/4">
+        <p className="mb-4">You can utilize the calculator below to calculate the estimated LAD amount.<sup>2</sup></p>
+        <div className="grid grid-cols-4 gap-3 items-center md:w-3/4 mx-auto">
           <label htmlFor="spa-date">SPA Signed Date</label>
           <input
             className="border col-span-3 dark:text-black p-1"
