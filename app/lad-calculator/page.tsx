@@ -1,18 +1,21 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import moment from "moment";
 
 export default function LADCalculator() {
   const YYYY_MM_DD = "YYYY-MM-DD";
 
   const mcoPeriod = 167;
-  const ladPercentage = 0.1;
+  const unitLADPercentage = 0.1;
+  const cfLADPercentage = 0.2;
 
 
   const [spaDate, setSpaDate] = useState<Date>(new Date("2018-06-03"));
   const [estimatedVP, setEstimatedVP] = useState<Date>(new Date("2024-03-31"));
   const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
   const [showMCOOffset, setShowMCOOffset] = useState<boolean>(true);
+  const [ladUnitAmount, setLADUnitAmount] = useState<number>(0);
+  const [ladCFAmount, setLADCFAmount] = useState<number>(0);
 
   const getDelayInDays = (withMCO: boolean): number => {
     const spaDeliveryDate = moment(spaDate).add(36, "month");
@@ -20,12 +23,22 @@ export default function LADCalculator() {
     return withMCO ? diffDays - mcoPeriod : diffDays;
   }
 
-  const getLADAmount = (): number => {
-    return (ladPercentage * purchaseAmount * getDelayInDays(true)) / 365;
-  }
+
+  useEffect(() => {
+    const getUnitLADAmount = (): number => {
+      return (unitLADPercentage * purchaseAmount * getDelayInDays(true)) / 365;
+    }
+
+    const getCFLADAmount = (): number => {
+      return (cfLADPercentage * purchaseAmount * unitLADPercentage * getDelayInDays(true)) / 365;
+    }
+
+    setLADUnitAmount(getUnitLADAmount());
+    setLADCFAmount(getCFLADAmount());
+  }, [spaDate, estimatedVP, purchaseAmount, getDelayInDays, setLADUnitAmount, setLADCFAmount]);
 
   return (
-    <main className="flex flex-col container mx-auto p-8 md:p-24">
+    <main className="flex flex-col container mx-auto px-8 pb-16 md:p-24">
       <p>According to Homebuyer Review Committee meeting held on 31 March 2023, the calculation of LAD is stated as below</p>
       <br />
       <p>Cara pengiraan pembayaran LAD mengikut pengiraan yang telah ditetapkan didalam <b>Klausa 26 (2) Perjanjian Jual Beli (SPA) dan Seksyen 35 Akta COVID-19</b> adalah seperti berikut:</p>
@@ -78,8 +91,13 @@ export default function LADCalculator() {
               Offset MCO Period
             </label>
           </div>
-          <div>Estimated LAD Amount</div>
-          <div className="col-span-3 text-green-600">RM {getLADAmount().toFixed(2)}</div>
+          <div className="col-span-4 text-center font-bold">Estimated LAD Amount</div>
+          <div className="col-span-2 text-right">Unit</div>
+          <div className="col-span-2 text-green-700">RM {ladUnitAmount.toFixed(2)}</div>
+          <div className="col-span-2 text-right">Common Facilities</div>
+          <div className="col-span-2 text-yellow-500">RM {ladCFAmount.toFixed(2)}</div>
+          <div className="col-span-2 text-right font-bold">Total</div>
+          <div className="col-span-2 text-green-400">RM {(ladUnitAmount + ladCFAmount).toFixed(2)}</div>
         </div>
       </div>
     </main>
