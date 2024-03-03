@@ -39,7 +39,7 @@ export default function LADCalculator() {
   }, [spaDate, estimatedVP, purchaseAmount, mcoOffsetLAD, getDelayInDays, setLADUnitAmount, setLADCFAmount]);
 
   return (
-    <main className="flex flex-col grow container mx-auto px-8 pb-16 md:px-24 md:pb-36">
+    <>
       <p>According to Homebuyer Review Committee meeting held on 31 March 2023, the calculation of LAD is stated as below:</p>
       <br />
       <p>Cara pengiraan pembayaran LAD mengikut pengiraan yang telah ditetapkan didalam <b>Klausa 26 (2) Perjanjian Jual Beli (SPA) dan Seksyen 35 Akta COVID-19</b> adalah seperti berikut:</p>
@@ -123,6 +123,6 @@ export default function LADCalculator() {
           <div className="col-span-2 text-green-400">RM {(ladUnitAmount + ladCFAmount).toFixed(2)}</div>
         </div>
       </div>
-    </main>
+    </>
   )
 }

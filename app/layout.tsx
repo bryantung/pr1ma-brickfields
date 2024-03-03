@@ -30,7 +30,9 @@ export default function RootLayout({
             Residensi PR1MA Brickfields <sup className="text-sm -top-4">1</sup>
           </h1>
         </header>
-        {children}
+        <main className="flex flex-col grow container mx-auto px-8 pb-16 md:px-24 md:pb-36">
+          {children}
+        </main>
         <footer className="bg-brickfields dark:bg-pink-600 text-white min-h-36 grow-0 p-8 md:px-24">
           <div className="text-sm">
             Disclaimers:<br />
