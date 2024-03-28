@@ -8,10 +8,12 @@ export default function LADCalculator() {
   const mcoPeriod = 167;
   const unitLADPercentage = 0.1;
   const cfLADPercentage = 0.2;
-
+  const defaultVPETA = new Date("2024-03-31");
 
   const [spaDate, setSpaDate] = useState<Date>(new Date("2018-06-03"));
-  const [estimatedVP, setEstimatedVP] = useState<Date>(new Date("2024-03-31"));
+  const [estimatedVP, setEstimatedVP] = useState<Date>(
+    moment(defaultVPETA).isBefore(moment()) ? new Date() : defaultVPETA
+  );
   const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
   const [showMCOOffset, setShowMCOOffset] = useState<boolean>(true);
   const [ladUnitAmount, setLADUnitAmount] = useState<number>(0);
