@@ -8,12 +8,10 @@ export default function LADCalculator() {
   const mcoPeriod = 167;
   const unitLADPercentage = 0.1;
   const cfLADPercentage = 0.2;
-  const defaultVPETA = new Date("2024-03-31");
+  const defaultVPETA = new Date("2024-04-30");
 
   const [spaDate, setSpaDate] = useState<Date>(new Date("2018-06-03"));
-  const [estimatedVP, setEstimatedVP] = useState<Date>(
-    moment(defaultVPETA).isBefore(moment()) ? new Date() : defaultVPETA
-  );
+  const [estimatedVP, setEstimatedVP] = useState<Date>(defaultVPETA);
   const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
   const [showMCOOffset, setShowMCOOffset] = useState<boolean>(true);
   const [ladUnitAmount, setLADUnitAmount] = useState<number>(0);
@@ -25,7 +23,6 @@ export default function LADCalculator() {
     const diffDays = moment(estimatedVP).diff(spaDeliveryDate, "days");
     return withMCO ? diffDays - mcoPeriod : diffDays;
   }
-
 
   useEffect(() => {
     const getUnitLADAmount = (): number => {
@@ -82,7 +79,7 @@ export default function LADCalculator() {
             value={purchaseAmount}
             onChange={(event: ChangeEvent<HTMLInputElement>) => setPurchaseAmount(Number(event.target.value))}
           />
-          <label htmlFor="vp-date">Estimated VP Date</label>
+          <label htmlFor="vp-date">VP Date</label>
           <input
             className="border col-span-3 dark:text-black p-1"
             id="vp-date"
@@ -90,10 +87,13 @@ export default function LADCalculator() {
             value={moment(estimatedVP).format(YYYY_MM_DD)}
             onChange={(event: ChangeEvent<HTMLInputElement>) => setEstimatedVP(new Date(event.target.value))}
           />
-          <label>Days of Delay</label>
+          <span className="col-start-2 col-span-3 align-left text-gray-400 italic">
+            PR1MA has confirmed 30 April 2024 as the cut-off date for LAD calculation, please change this VP date if your case differs
+          </span>
+          <label htmlFor="delayed-days">Days of Delay</label>
           <div className="grid grid-cols-2 col-span-3">
-            <span className="text-red-500">{getDelayInDays(showMCOOffset)} Days</span>
-            <label htmlFor="mco-offset-delay">
+            <span id="delayed-days" className="text-red-500">{getDelayInDays(showMCOOffset)} Days</span>
+            <div>
               <input
                 id="mco-offset-delay"
                 className="mr-2"
@@ -101,23 +101,25 @@ export default function LADCalculator() {
                 defaultChecked={showMCOOffset}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => setShowMCOOffset(event.target.checked)}
               />
-              Offset MCO Period
-            </label>
+              <label htmlFor="mco-offset-delay">
+                Offset MCO Period
+              </label>
+            </div>
           </div>
           <div className="col-span-4 text-center font-bold">Estimated LAD Amount</div>
           <div className="col-span-2 text-right">Unit</div>
           <div className="col-span-2 text-green-600 drop-shadow-xl">RM {ladUnitAmount.toFixed(2)}</div>
           <div className="col-span-2 text-right">Common Facilities</div>
           <div className="col-span-2 text-yellow-500">RM {ladCFAmount.toFixed(2)}</div>
-          <div className="grid grids-cols-4 col-start-3">
-          <label htmlFor="mco-offset-lad">
-              <input
-                id="mco-offset-lad"
-                className="mr-2"
-                type="checkbox"
-                defaultChecked={mcoOffsetLAD}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setMCOOffsetLAD(event.target.checked)}
-              />
+          <div className="col-start-3 col-span-2">
+            <input
+              id="mco-offset-lad"
+              className="mr-2"
+              type="checkbox"
+              defaultChecked={mcoOffsetLAD}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setMCOOffsetLAD(event.target.checked)}
+            />
+            <label htmlFor="mco-offset-lad">
               Offset MCO Period
             </label>
           </div>
