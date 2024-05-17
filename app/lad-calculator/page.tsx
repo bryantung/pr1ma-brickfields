@@ -9,6 +9,7 @@ export default function LADCalculator() {
   const unitLADPercentage = 0.1;
   const cfLADPercentage = 0.2;
   const defaultVPETA = new Date("2024-04-30");
+  const cfCCCDate = new Date("2024-03-27");
 
   const [spaDate, setSpaDate] = useState<Date>(new Date("2018-06-03"));
   const [estimatedVP, setEstimatedVP] = useState<Date>(defaultVPETA);
@@ -18,19 +19,19 @@ export default function LADCalculator() {
   const [ladCFAmount, setLADCFAmount] = useState<number>(0);
   const [mcoOffsetLAD, setMCOOffsetLAD] = useState<boolean>(false);
 
-  const getDelayInDays = (withMCO: boolean): number => {
+  const getDelayInDays = (withMCO: boolean, cutOffDate: Date): number => {
     const spaDeliveryDate = moment(spaDate).add(36, "month");
-    const diffDays = moment(estimatedVP).diff(spaDeliveryDate, "days");
+    const diffDays = moment(cutOffDate).diff(spaDeliveryDate, "days");
     return withMCO ? diffDays - mcoPeriod : diffDays;
   }
 
   useEffect(() => {
     const getUnitLADAmount = (): number => {
-      return (unitLADPercentage * purchaseAmount * getDelayInDays(true)) / 365;
+      return (unitLADPercentage * purchaseAmount * getDelayInDays(true, estimatedVP)) / 365;
     }
 
     const getCFLADAmount = (): number => {
-      return (cfLADPercentage * purchaseAmount * unitLADPercentage * getDelayInDays(mcoOffsetLAD)) / 365;
+      return (cfLADPercentage * purchaseAmount * unitLADPercentage * getDelayInDays(mcoOffsetLAD, cfCCCDate)) / 365;
     }
 
     setLADUnitAmount(getUnitLADAmount());
@@ -92,7 +93,7 @@ export default function LADCalculator() {
           </span>
           <label htmlFor="delayed-days">Days of Delay</label>
           <div className="grid grid-cols-2 col-span-3">
-            <span id="delayed-days" className="text-red-500">{getDelayInDays(showMCOOffset)} Days</span>
+            <span id="delayed-days" className="text-red-500">{getDelayInDays(showMCOOffset, estimatedVP)} Days</span>
             <div>
               <input
                 id="mco-offset-delay"
