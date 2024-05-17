@@ -110,7 +110,7 @@ export default function LADCalculator() {
           <div className="col-span-4 text-center font-bold">Estimated LAD Amount</div>
           <div className="col-span-2 text-right">Unit</div>
           <div className="col-span-2 text-green-600 drop-shadow-xl">RM {ladUnitAmount.toFixed(2)}</div>
-          <div className="col-span-2 text-right">Common Facilities</div>
+          <div className="col-span-2 text-right">Common Facilities *</div>
           <div className="col-span-2 text-yellow-500">RM {ladCFAmount.toFixed(2)}</div>
           <div className="col-start-3 col-span-2">
             <input
@@ -126,6 +126,9 @@ export default function LADCalculator() {
           </div>
           <div className="col-span-2 text-right font-bold">Total</div>
           <div className="col-span-2 text-green-400">RM {(ladUnitAmount + ladCFAmount).toFixed(2)}</div>
+          <div className="col-span-4 text-center text-gray-400 italic">
+            <span>* CCC obtained on 27 March 2024, common facilities cut-off after that day.</span>
+          </div>
         </div>
       </div>
     </>
