@@ -4,16 +4,22 @@ import moment from "moment";
 
 export default function LADCalculator() {
   const YYYY_MM_DD = "YYYY-MM-DD";
+  const SPA_DATE = "local_spa_date";
+  const SPA_AMOUNT = "local_spa_amount";
 
   const mcoPeriod = 167;
   const unitLADPercentage = 0.1;
   const cfLADPercentage = 0.2;
   const defaultVPETA = new Date("2024-04-30");
   const cfCCCDate = new Date("2024-03-27");
+  const defaultSPADate = "2018-06-03";
 
-  const [spaDate, setSpaDate] = useState<Date>(new Date("2018-06-03"));
+  const initialSPADate = localStorage && (localStorage.getItem(SPA_DATE) ?? defaultSPADate);
+  const initialSPAAmount = localStorage && Number(localStorage.getItem(SPA_AMOUNT) ?? 0);
+
+  const [spaDate, setSpaDate] = useState<Date>(new Date(initialSPADate));
   const [estimatedVP, setEstimatedVP] = useState<Date>(defaultVPETA);
-  const [purchaseAmount, setPurchaseAmount] = useState<number>(0);
+  const [purchaseAmount, setPurchaseAmount] = useState<number>(initialSPAAmount);
   const [showMCOOffset, setShowMCOOffset] = useState<boolean>(true);
   const [ladUnitAmount, setLADUnitAmount] = useState<number>(0);
   const [ladCFAmount, setLADCFAmount] = useState<number>(0);
@@ -25,7 +31,18 @@ export default function LADCalculator() {
     return withMCO ? diffDays - mcoPeriod : diffDays;
   }
 
+  const clearCachedData = () => {
+    localStorage.removeItem(SPA_DATE);
+    localStorage.removeItem(SPA_AMOUNT);
+
+    setSpaDate(new Date(defaultSPADate));
+    setPurchaseAmount(0);
+  }
+
   useEffect(() => {
+    localStorage.setItem(SPA_DATE, moment(spaDate).format(YYYY_MM_DD));
+    localStorage.setItem(SPA_AMOUNT, `${purchaseAmount}`);
+
     const getUnitLADAmount = (): number => {
       return (unitLADPercentage * purchaseAmount * getDelayInDays(true, estimatedVP)) / 365;
     }
@@ -110,7 +127,7 @@ export default function LADCalculator() {
           <div className="col-span-4 text-center font-bold">Estimated LAD Amount</div>
           <div className="col-span-2 text-right">Unit</div>
           <div className="col-span-2 text-green-600 drop-shadow-xl">RM {ladUnitAmount.toFixed(2)}</div>
-          <div className="col-span-2 text-right">Common Facilities *</div>
+          <div className="col-span-2 text-right">Common Facilities **</div>
           <div className="col-span-2 text-yellow-500">RM {ladCFAmount.toFixed(2)}</div>
           <div className="col-start-3 col-span-2">
             <input
@@ -127,7 +144,10 @@ export default function LADCalculator() {
           <div className="col-span-2 text-right font-bold">Total</div>
           <div className="col-span-2 text-green-400">RM {(ladUnitAmount + ladCFAmount).toFixed(2)}</div>
           <div className="col-span-4 text-center text-gray-400 italic">
-            <span>* CCC obtained on 27 March 2024, common facilities cut-off after that day.</span>
+            <span>** CCC obtained on 27 March 2024, common facilities cut-off after that day.</span>
+          </div>
+          <div className="col-span-4 text-center">
+            SPA date and purchase price are cached by default, <button className="font-bold text-blue-400" onClick={clearCachedData}>click here</button> to reset and clear.
           </div>
         </div>
       </div>
