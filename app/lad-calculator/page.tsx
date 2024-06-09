@@ -14,8 +14,12 @@ export default function LADCalculator() {
   const cfCCCDate = new Date("2024-03-27");
   const defaultSPADate = "2018-06-03";
 
-  const initialSPADate = localStorage && (localStorage.getItem(SPA_DATE) ?? defaultSPADate);
-  const initialSPAAmount = localStorage && Number(localStorage.getItem(SPA_AMOUNT) ?? 0);
+  let initialSPADate = defaultSPADate;
+  let initialSPAAmount = 0;
+  if (typeof window !== "undefined") {
+    initialSPADate = localStorage.getItem(SPA_DATE) ?? defaultSPADate;
+    initialSPAAmount = Number(localStorage.getItem(SPA_AMOUNT) ?? 0);
+  }
 
   const [spaDate, setSpaDate] = useState<Date>(new Date(initialSPADate));
   const [estimatedVP, setEstimatedVP] = useState<Date>(defaultVPETA);
